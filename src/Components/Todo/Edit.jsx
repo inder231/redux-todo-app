@@ -11,7 +11,7 @@ import {
 import { useParams, Link,useNavigate } from "react-router-dom";
 import {useDispatch,useSelector} from "react-redux";
 import axios from "axios";
-import { setTodoRequest } from "../../Redux/action";
+import { setTodoRequest } from "../../Redux/AppReducer/action";
 const Edit = () => {
   const { id } = useParams();
   const [text, setText] = useState("");

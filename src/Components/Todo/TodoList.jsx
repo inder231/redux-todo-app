@@ -16,7 +16,7 @@ import {
   EditIcon,
 } from "@chakra-ui/icons";
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTodoRequest,
@@ -25,10 +25,13 @@ import {
   deleteTodoRequest,
   deleteTodoSuccess,
   deleteTodoFailure,
-} from "../../Redux/action";
+} from "../../Redux/AppReducer/action";
 import { Link } from "react-router-dom";
 const TodoList = () => {
-  const { todos, isLoading, isError } = useSelector((store) => store);
+  const [error, setError] = useState("");
+  const { todos, isLoading, isError } = useSelector(
+    (store) => store.todoReducer
+  );
   const dispatch = useDispatch();
   const getTodos = async () => {
     dispatch(getTodoRequest());
@@ -36,10 +39,10 @@ const TodoList = () => {
       .get("http://localhost:8080/todos")
       .then((res) => {
         dispatch(getTodoSuccess(res.data));
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
-        console.log(err.message);
+        setError(err.message);
         dispatch(getTodoFailure());
       });
   };
@@ -56,7 +59,9 @@ const TodoList = () => {
       });
   };
   const deleteTodoHandler = (id) => {
-    deleteTodo(id).then(() => getTodos());
+    deleteTodo(id)
+      .then(() => getTodos())
+      .catch((err) => setError(err.message));
   };
   const toggleStatus = (id, ele) => {
     axios
@@ -65,7 +70,7 @@ const TodoList = () => {
         getTodos();
       })
       .catch((err) => {
-        console.log(err.message);
+        setError(err.message);
       });
   };
 
