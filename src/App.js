@@ -1,6 +1,8 @@
 
 import './App.css';
-import Allroutes from './Routes/Allroutes';
+import HomePage from './REDUX2/pages/HomePage';
+import Allroutes from './REDUX2/routes/Allroutes';
+// import Allroutes from './Routes/Allroutes';
 
 function App() {
   return (
